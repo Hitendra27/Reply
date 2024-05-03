@@ -153,19 +153,29 @@ fun ReplyHomeScreen(
 
         }
     } else {
-        if (replyUiState.isShowingHomepage) {
-            ReplyAppContent(
-                navigationType = navigationType,
-                contentType = contentType,
-                replyUiState = replyUiState,
-                onTabPressed = onTabPressed,
-                onEmailCardPressed = onEmailCardPressed,
-                navigationItemContentList = navigationItemContentList,
-                modifier = modifier
-            )
+        if (navigationType == ReplyNavigationType.PERMANENT_NAVIGATION_DRAWER) {
+            PermanentNavigationDrawer(
+                drawerContent = {
+                    PermanentDrawerSheet(
+                        Modifier.width(dimensionResource(R.dimen.drawer_width))) {
+                        NavigationDrawerContent(
+                            selectedDestination = replyUiState.currentMailbox,
+                            onTabPressed = onTabPressed,
+                            navigationItemContentList = navigationItemContentList,
+                            modifier = Modifier
+                                .wrapContentWidth()
+                                .fillMaxHeight()
+                                .background(MaterialTheme.colorScheme.inverseOnSurface)
+                                .padding(dimensionResource(R.dimen.drawer_padding_content))
+                        )
+                    }
+
+                }) {
+            }
         } else {
             ReplyDetailsScreen(
                 replyUiState = replyUiState,
+                isFullScreen = true,
                 onBackPressed = onDetailScreenBackPressed,
                 modifier = modifier
             )
